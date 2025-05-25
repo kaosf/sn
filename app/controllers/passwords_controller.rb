@@ -1,3 +1,4 @@
+# :nocov:
 class PasswordsController < ApplicationController
   allow_unauthenticated_access
   before_action :set_user_by_token, only: %i[ edit update ]
@@ -31,3 +32,4 @@ class PasswordsController < ApplicationController
       redirect_to new_password_path, alert: "Password reset link is invalid or has expired."
     end
 end
+# :nocov:

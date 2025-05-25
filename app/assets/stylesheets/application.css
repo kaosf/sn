@@ -8,3 +8,28 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #303742;
+    color: #b7b7b7;
+  }
+  a {
+    color: #7775f9;
+  }
+  a:visited {
+    color: #a7a6fb;
+  }
+  input[type=email] {
+    background-color: #1f2329;
+    color: #bbb;
+  }
+  input[type=password] {
+    background-color: #1f2329;
+    color: #bbb;
+  }
+  input[type=submit] {
+    background-color: #1f2329;
+    color: #bbb;
+  }
+}

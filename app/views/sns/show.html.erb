@@ -1,0 +1,21 @@
+<script>fetch("/sn_reads/<%= @sn.uuid %>", { headers: { "X-CSRF-Token": document.querySelector("meta[name=csrf-token]")?.content }, method: "PUT" })</script>
+<p>
+  <%= @sn_new_unread.nil? ? "←Newer(U)" : link_to_sn(@sn_new_unread, title: "←Newer(U)") %>
+  |
+  <%= @sn_new.nil? ? "←Newer" : link_to_sn(@sn_new, title: "←Newer") %>
+  |
+  <%= @sn_old.nil? ? "Older→" : link_to_sn(@sn_old, title: "Older→") %>
+  |
+  <%= @sn_old_unread.nil? ? "Older(U)→" : link_to_sn(@sn_old_unread, title: "Older(U)→") %>
+</p>
+
+<p><%= @sn.uuid %></p>
+<p><%= Time.at(@sn.t_us / 1_000_000).in_time_zone(ENV.fetch("TZ", "UTC")).strftime("%Y-%m-%d %H:%M:%S") %></p>
+<p><%= @sn.title %></p>
+
+<p>
+  <% s = @sn.body.dup %>
+  <% s.gsub!("\n", "\n<br />\n") %>
+  <% s.gsub!(/(https?:\/\/[^\s]*)/, "<a href=\"\\1\" rel=\"noopener noreferrer\">\\1</a>") %>
+  <%= sanitize(s, tags: ["br", "a"], attributes: ["href", "rel"]) %>
+</p>

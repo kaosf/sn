@@ -1,0 +1,13 @@
+<hr>
+<%= link_to "New", new_sn_subscription_path %>
+<hr>
+<% @sn_subscriptions.each do |sn_subscription| %>
+<div>
+  <%= sn_subscription.id %>
+  <%= sn_subscription.created_at %>
+  <%= link_to "Test notify", sn_notifications_path(params: { sn_subscription_id: sn_subscription.id}), { data: { turbo_method: :post, turbo_confirm: "Are you sure?" } } %>
+  <%= link_to "Show", sn_subscription %>
+  <%= link_to "Destroy", sn_subscription, { data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } } %>
+</div>
+<hr>
+<% end%>

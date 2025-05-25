@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Simple Notification" %></title>
+    <title><%= content_for(:title) || "SN" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -23,6 +23,19 @@
   </head>
 
   <body>
+    <% if authenticated? %>
+      <% if request.path != sns_path %>
+        <%= link_to "Home", sns_path  %>
+      <% else %>
+        Home
+      <% end %>
+      <% if request.path != menu_path %>
+        <%= link_to "Menu", menu_path %>
+      <% else %>
+        Menu
+      <% end %>
+      <%= yield :sns_sub_menu %>
+    <% end %>
     <%= yield %>
   </body>
 </html>

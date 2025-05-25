@@ -1,0 +1,54 @@
+<script>
+if ("serviceWorker" in navigator) {
+  (async () => {
+    await navigator.serviceWorker.register("/service-worker");
+    if (Notification.permission !== "granted") {
+      await Notification.requestPermission();
+    }
+    const reg = await navigator.serviceWorker.ready;
+    const subscription =
+      await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: new Uint8Array(
+          <%= Base64.urlsafe_decode64(VapidKeys.public_key).bytes %>
+        ),
+      });
+    const { endpoint, keys }= subscription.toJSON();
+    const { p256dh, auth } = keys;
+    document.getElementById("endpoint").value = endpoint;
+    document.getElementById("p256dh").value = p256dh;
+    document.getElementById("auth").value = auth;
+  })();
+}
+</script>
+
+<% sn_subscription = @sn_subscription %>
+<%= form_with(model: sn_subscription) do |form| %>
+  <% if sn_subscription.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(sn_subscription.errors.count, "error") %> prohibited this sn_subscription from being saved:</h2>
+
+      <ul>
+        <% sn_subscription.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label "endpoint" %>
+    <%= form.text_field :endpoint, id: :endpoint %>
+  </div>
+  <div class="field">
+    <%= form.label "p256dh" %>
+    <%= form.text_field :p256dh, id: :p256dh %>
+  </div>
+  <div class="field">
+    <%= form.label "auth" %>
+    <%= form.text_field :auth, id: :auth %>
+  </div>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

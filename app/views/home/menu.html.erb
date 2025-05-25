@@ -1,0 +1,13 @@
+<p>
+  <%= link_to "Subscriptions", sn_subscriptions_path %>
+</p>
+<p>
+  <%= link_to "Export", sn_exports_path, { data: { turbo: false }, onclick: "return confirm('Are you sure?')" } %>
+</p>
+<p>
+  <%= link_to "Sign out", session_path, { data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } } %>
+</p>
+<h2>Dangerous zone</h2>
+<p>
+  <%= link_to "Delete all and import", new_sn_import_path %>
+</p>

@@ -1,0 +1,19 @@
+<% if Sn.count.positive? %>
+  <p>Have you backed up all SN items by exporting? <%= link_to "Back", menu_path %> to export them.</p>
+  <%= button_to "Delete all", sn_all_deletions_path, { data: { turbo_method: :post, turbo_confirm: "Are you sure?" }} %>
+  <p>Delete all before importing.</p>
+  <p>NOTE: <%= link_to "Subscriptions", sn_subscriptions_path %> will NOT be deleted. They are kept remaining.</p>
+<% else %>
+  <p>Select sns.jsonl file and import it.</p>
+  <% if @error %>
+    <p><%= @error %></p>
+  <% end %>
+  <%= form_with url: sn_imports_path do |f| %>
+    <div>
+      <%= f.file_field :file %>
+    </div>
+    <div>
+      <%= f.submit "Import" %>
+    </div>
+  <% end %>
+<% end %>
