@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+git checkout main
+git merge --ff $CURRENT_BRANCH
+set +e
+
+VERSION=$(git tag -l | tail -1)
+
+if [[ -z $VERSION ]]; then
+  echo "Could not find the latest tag"
+  VERSION=$(date +%Y%m%d).0
+else
+  DATE=$(echo $VERSION | cut -d. -f1)
+  TODAY=$(date +%Y%m%d)
+  if [[ $DATE == $TODAY ]]; then
+    VERSION=$(echo $VERSION | cut -d. -f2)
+    VERSION=$((VERSION+1))
+    VERSION=$DATE.$VERSION
+  else
+    VERSION=$TODAY.0
+  fi
+fi
+
+read -p "$VERSION, OK? y/N: " -n 1 -r ANSWER
+
+if [[ $ANSWER != "y" ]]; then
+  VERSION=""
+  while [[ -z $VERSION ]]; do
+    read -p "Version: " VERSION
+  done
+fi
+
+set -e
+git tag "$VERSION"
+git push origin main
+git push origin "$VERSION"
