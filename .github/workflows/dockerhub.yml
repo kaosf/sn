@@ -21,7 +21,7 @@ jobs:
           type=match,pattern=\d{8}\.\d+,group=0
         flavor: latest=auto
     - name: Build & push an image
-      uses: docker/build-push-action@v4
+      uses: docker/build-push-action@v6
       with:
         context: .
         file: ./Dockerfile
