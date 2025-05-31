@@ -3,8 +3,7 @@ require 'rails_helper'
 RSpec.describe Sn, type: :model do
   describe "after_create_commit" do
     it do
-      create :sn_subscription
-      expect_any_instance_of(SnSubscription).to receive(:notify)
+      expect(NotificationJob).to have_been_enqueued.with(Integer)
       create :sn
     end
 

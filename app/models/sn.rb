@@ -10,9 +10,7 @@ class Sn < ApplicationRecord
   end
 
   after_create_commit do
-    body = "#{url_prefix}/sns/#{uuid}"
-    url = "#{url_prefix}/sns/#{uuid}"
-    SnSubscription.all.each { it.notify(title:, body:, url:) }
+    NotificationJob.perform_later(self.id)
     ActionCable.server.broadcast "SnsChannel", { action: "SnCreate" }
   end
 
@@ -21,25 +19,6 @@ class Sn < ApplicationRecord
 
   validates :title, presence: true
   validates :body, presence: true
-
-  def url_prefix
-    case Rails.env
-    when "production"
-      # :nocov:
-      "https://#{ENV.fetch("DOMAIN", "example.com")}"
-      # :nocov:
-    when "test"
-      "http://localhost:3000"
-    when "development"
-      # :nocov:
-      "http://localhost:#{ENV.fetch("PORT", "3000")}"
-      # :nocov:
-    else
-      # :nocov:
-      raise StandardError
-      # :nocov:
-    end
-  end
 
   def new_and_old_and_unread_models
     new = Sn.ordered_by_time_desc.where("t_us > :t_us OR (t_us = :t_us AND id > :id)", t_us:, id:).last
