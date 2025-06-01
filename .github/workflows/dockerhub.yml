@@ -16,7 +16,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Extract metadata
       id: meta
-      uses: docker/metadata-action@v4
+      uses: docker/metadata-action@v5
       with:
         images: kaosf/sn
         # tags: |
