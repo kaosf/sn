@@ -1,7 +1,9 @@
 name: "Docker Hub"
 on:
   push:
-    tags: ["[0-9]+.[0-9]+"]
+    tags:
+    - "[0-9]+.[0-9]+" # Matches yyyymmdd.x
+    - "[0-9]+.[0-9]+.beta[0-9]+" # Matches yyyymmdd.x.betaN
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -17,9 +19,13 @@ jobs:
       uses: docker/metadata-action@v4
       with:
         images: kaosf/sn
+        # tags: |
+        #   type=ref,event=tag
         tags: |
-          type=match,pattern=\d{8}\.\d+,group=0
-        flavor: latest=auto
+          type=match,pattern=\d{8}\.\d+(\.beta\d+)?,group=0 # This will capture yyyymmdd.x or yyyymmdd.x.betaN
+        # NOTE: Prefer `match` over `ref` to strictly control tag formats.
+        flavor: |
+          latest=${{ !contains(github.ref, 'beta') }} # Set latest only if 'beta' is not in the tag
     - name: Build & push an image
       uses: docker/build-push-action@v4
       with:
