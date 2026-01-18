@@ -68,5 +68,6 @@ group :test do
   gem "selenium-webdriver"
 end
 
+gem "litestream"
 gem "kaminari"
 gem "web-push"
