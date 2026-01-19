@@ -15,9 +15,8 @@ else
   DATE=$(echo $VERSION | cut -d. -f1)
   TODAY=$(date +%Y%m%d)
   if [[ $DATE == $TODAY ]]; then
-    VERSION=$(echo $VERSION | cut -d. -f2)
-    VERSION=$((VERSION+1))
-    VERSION=$DATE.$VERSION
+    X=$(echo $VERSION | cut -d. -f2)
+    VERSION=$DATE.$((X+1))
   else
     VERSION=$TODAY.0
   fi
