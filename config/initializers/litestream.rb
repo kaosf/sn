@@ -30,6 +30,7 @@ Rails.application.configure do
   #
   # Replica-specific endpoint. Set the endpoint URL of the S3-compatible service. Only required for non-AWS services.
   # config.litestream.replica_endpoint = "endpoint.your-objectstorage.com"
+  config.litestream.replica_endpoint = ENV.fetch("LITESTREAM_REPLICA_ENDPOINT", "").then { it == "" ? nil : it }
 
   # Configure the default Litestream config path
   # config.config_path = Rails.root.join("config", "litestream.yml")
