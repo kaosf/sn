@@ -70,3 +70,5 @@ end
 
 gem "kaminari"
 gem "web-push"
+
+gem "litestream", "~> 0.14.0"
